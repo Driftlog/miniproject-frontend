@@ -1,0 +1,51 @@
+<h1> Sign Up Here</h1>
+
+
+<form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+
+  <p>
+  <label for="name">
+  What's your name? </label> <input formControlName="name">
+  </p>
+
+  <p>
+    <label for="password">
+    Entera password: </label> <input id="password" formControlName="password]">
+    </p>
+
+  <p>
+  <label for="email">
+  Enter your email: </label> <input id="email" formControlName="email">
+  </p>
+
+  <p>
+  <label for="phoneNumber">
+  Enter your phone number: </label> <input id="phoneNumber" formControlName="phoneNumber">
+  </p>
+
+
+  <p>
+  <label for="address1">
+  Address Line Number 1: </label> <input id="address1" formControlName="address1">
+  </p>
+
+  <p>
+  <label for="address2">
+  Address Line Number 2: </label> <input id="address2" formControlName="address2">
+  </p>
+
+  <p>
+  <label for="postalCode">
+  Postal Code: </label> <input id="postalCode" formControlName="postalCode">
+  </p>
+
+  <p>
+  <label for="displayPic">
+  How about a display picture?:  </label><input id="displayPic" type="file" #file>
+  </p>
+
+  <button type="submit"> All done! </button>
+
+</form>
+
+

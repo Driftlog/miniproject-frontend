@@ -1,0 +1,63 @@
+<fieldset class="form-fieldset">
+
+  <form [formGroup]="travelForm" (ngSubmit)="processForm()">
+    <div class="form-field">
+    <mat-form-field>
+      Starting Point: <input matInput formControlName="origin" id="origin"  type="text" (input)="originChange()"
+      placeholder="Enter a location">
+    </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field >
+        Destination: <input id="destination" matInput formControlName="destination" type="text" (input)="destinationChange()"
+        placeholder="Enter a location">
+      </mat-form-field>
+      </div>
+
+    <div>
+    <mat-radio-group id="mode" formControlName="mode">
+      Mode of Travel:
+      <br>
+      <mat-radio-button value="DRIVING">Driving</mat-radio-button>
+      <mat-radio-button value="WALKING">Walking</mat-radio-button>
+      <mat-radio-button value="BICYCLING">Bicycle</mat-radio-button>
+      <mat-radio-button value="TRANSIT">Public Transport</mat-radio-button>
+    </mat-radio-group>
+    </div>
+
+    <div>
+    <mat-form-field>
+      Enter start date: <input matInput formControlName="startDate" type="datetime-local" placeholder="start date">
+    </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        Enter end date: <input matInput formControlName="endDate" type="datetime-local" placeholder="end date">
+      </mat-form-field>
+    </div>
+
+    <button type="submit"> Done! </button>
+  </form>
+
+<div class="my-google-map">
+  <google-map
+  #googleMap
+  id="googlemap"
+  (mapClick)="onMapClick($event)"
+  [options]="options"
+  [zoom]="zoom"
+  [center]="center"
+  >
+
+  <div>
+  <button (click)="resetFields()">Reset locations</button>
+  </div>
+
+  </google-map>
+</div>
+</fieldset>
+
+
+

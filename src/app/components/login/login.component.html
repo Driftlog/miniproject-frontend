@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <h1>Log In Here!</h1>
+
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <p>
+  <mat-form-field>
+  Email: <input formControlName="email" required matInput>
+  </mat-form-field>
+  </p>
+
+  <p>
+  <mat-form-field>
+  Password: <input formControlName="password" required matInput>
+  </mat-form-field>
+  </p>
+
+  <button type="submit" mat-raised-button> Login </button>
+</form>
+
+<br>
+<h3> Log in with Google?</h3>
+
+<br>
+ <button mat-raised-button type="click" (click)="googleLogin()"> <mat-icon> </mat-icon>Log in with google!</button>
+
+</body>
+</html>
+
+

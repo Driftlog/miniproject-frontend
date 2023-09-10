@@ -1,0 +1,51 @@
+/* /* #autocomplete {
+  position: absolute;
+  top: 100px;
+  left: 200px;
+  z-index: 100;
+} */
+
+/* .my-google-map {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  z-index: 1;
+}
+
+.map-container {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  pointer-events: none;
+  }
+
+.my-travel-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.form-fieldset {
+  padding: 20px;
+  max-width: 300px;
+
+}
+
+.form-field {
+  margin-bottom: 10px;
+}
+ */
+
+ .form-fieldset {
+  width: 400px;
+ }
+
+ mat-radio-group {
+  max-width: 300px;
+ }
