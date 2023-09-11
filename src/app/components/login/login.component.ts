@@ -32,8 +32,15 @@ export class LoginComponent implements OnInit{
   }
 
   googleLogin() {
-      this.authSvc.login()
+
+
   }
+
+
+  //this.http.post(url, { header: {.'Authorization': Bearer ${str} } })
+  //btoa(`${username}:${password}`)
+
+
 
 
 }

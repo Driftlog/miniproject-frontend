@@ -5,5 +5,13 @@ import { Injectable } from '@angular/core';
 })
 export class GoogleMapService {
 
+  directionsObj!: google.maps.DirectionsResult
+  
+
   constructor() { }
+
+
+
+
+
 }

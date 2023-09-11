@@ -1,6 +1,9 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild, inject, numberAttribute } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
+import { GoogleMapService } from 'src/app/google-map.service';
+import { ulid } from 'ulid';
+import { Event } from '../models/Event';
 
 
 @Component({
@@ -22,7 +25,7 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
 
   originLatLng?: google.maps.LatLngLiteral
   destinationLatLng?: google.maps.LatLngLiteral
-
+  directionsObj !: google.maps.DirectionsResult
   markers: google.maps.Marker[] = []
   originMarker ?: google.maps.Marker
   destinationMarker ?: google.maps.Marker
@@ -36,6 +39,10 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
 
   travelForm !: FormGroup
   fb = inject(FormBuilder)
+  googleMapSvc = inject(GoogleMapService)
+
+
+
 
   ngOnInit(): void {
     this.travelForm = this.createForm()
@@ -58,10 +65,16 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
 
+
+
+      markerIndex == 1 ? this.travelForm.controls['destination'].setValue(place.formatted_address)
+       : this.travelForm.controls['origin'].setValue(place.formatted_address)
+
+
       if (place.geometry && place.geometry.location) {
         // User entered the name of a Place that was not suggested and
         // pressed the Enter key, or the Place Details request failed.
-        //trying to add and remove markers, check if marker exists
+        //trying to add and remove markers
         this.markers.push(this.addMarker(place))
         markerIndex == 1 ? this.destinationLatLng = place.geometry.location.toJSON() : this.originLatLng = place.geometry.location.toJSON()
         //store location of the marker
@@ -69,6 +82,7 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
       } else {
         window.alert("No details avaiable for input: " + place?.name + "'")
       }
+
   } )
   }
 
@@ -89,6 +103,9 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
         if (status == 'OK') {
           directionsRenderer.setDirections(result)
         }
+      }).then((directionsResult) => {
+        this.googleMapSvc.directionsObj = directionsResult
+        console.log(directionsResult.routes)
       })
     }
   }
@@ -111,6 +128,13 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
   }
 
   processForm() {
+
+    const eventID : string = ulid().slice(0, 7)
+
+    const event = <Event> this.travelForm.value
+    event.eventID = eventID
+
+    console.log(event)
 
   }
 
@@ -153,24 +177,17 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
 
   }
 
-  // addMarker(position: google.maps.LatLng | google.maps.LatLngLiteral) {
-  //   console.log("placing marker")
-  //     new google.maps.Marker({
-  //       position: position,
-  //       map : this.googleMap
-  //     }
-  //     )
-  // }
-
   createForm() {
     return this.fb.group(
       {origin: this.fb.control<string>(''),
       destination: this.fb.control<string>(''),
       mode: this.fb.control<string>('DRIVING'),
+      comments: this.fb.control<string>(''),
       startDate: this.fb.control<Date>(new Date(0)),
       endDate: this.fb.control<Date>(new Date(0))}
     )
   }
+
 
 
 }
