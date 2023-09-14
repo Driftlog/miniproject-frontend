@@ -14,9 +14,12 @@ import { UserHomeComponent } from './components/user-home/user-home.component';
 import { PlacesSearchComponent } from './components/places-search/places-search.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { GoogleMapAngularComponent } from './components/google-map-angular/google-map-angular.component';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from '../material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { DisplayrouteComponent } from './components/displayroute/displayroute.component';
+import { EventListComponent } from './components/event-list/event-list.component';
+import { EventDetailsComponent } from './components/event-details/event-details.component';
 
 
 @NgModule({
@@ -27,7 +30,10 @@ import { OAuthModule } from 'angular-oauth2-oidc';
     SignupComponent,
     UserHomeComponent,
     PlacesSearchComponent,
-    GoogleMapAngularComponent
+    GoogleMapAngularComponent,
+    DisplayrouteComponent,
+    EventListComponent,
+    EventDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,13 @@
+import { Email } from './../models/Email';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild, inject, numberAttribute } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
 import { GoogleMapService } from 'src/app/google-map.service';
 import { ulid } from 'ulid';
 import { Event } from '../models/Event';
+import { TimeUtilService } from 'src/app/time-util.service';
+import { UserService } from 'src/app/user.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -29,6 +33,7 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
   markers: google.maps.Marker[] = []
   originMarker ?: google.maps.Marker
   destinationMarker ?: google.maps.Marker
+  directionsRender !: google.maps.DirectionsRenderer
 
   @ViewChild('googleMap')
   googleMap !: GoogleMap
@@ -40,8 +45,9 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
   travelForm !: FormGroup
   fb = inject(FormBuilder)
   googleMapSvc = inject(GoogleMapService)
-
-
+  timeSvc = inject(TimeUtilService)
+  userSvc = inject(UserService)
+  router = inject(Router)
 
 
   ngOnInit(): void {
@@ -65,10 +71,8 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
 
-
-
-      markerIndex == 1 ? this.travelForm.controls['destination'].setValue(place.formatted_address)
-       : this.travelForm.controls['origin'].setValue(place.formatted_address)
+      markerIndex == 1 ? this.travelForm.controls['destination'].setValue(place.name)
+       : this.travelForm.controls['origin'].setValue(place.name)
 
 
       if (place.geometry && place.geometry.location) {
@@ -88,12 +92,15 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
 
   getRoute() {
 
-    console.log(this.travelForm.value['mode'])
+    console.log(this.destinationLatLng)
+    console.log(this.originLatLng)
 
     if (this.destinationLatLng && this.originLatLng && this.travelForm.value['mode']) {
 
+
      const directionsService = new google.maps.DirectionsService();
-     const directionsRenderer = new google.maps.DirectionsRenderer({ map : this.googleMap.googleMap});
+     const directionsRenderer = this.directionsRender
+
      const req = {
         origin: this.originLatLng,
         destination: this.destinationLatLng,
@@ -104,8 +111,7 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
           directionsRenderer.setDirections(result)
         }
       }).then((directionsResult) => {
-        this.googleMapSvc.directionsObj = directionsResult
-        console.log(directionsResult.routes)
+        this.directionsObj = directionsResult
       })
     }
   }
@@ -122,24 +128,64 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
   resetFields () {
     this.travelForm.controls['origin'].reset()
     this.travelForm.controls['destination'].reset()
+
     this.markers.forEach((marker, index) => {
       this.markers[index].setMap(null)
     })
+    this.markers = []
+    this.directionsRender.set('directions', null);
+    this.originLatLng = undefined
+    this.destinationLatLng = undefined
   }
 
   processForm() {
 
+    console.log(this.travelForm.value['origin'])
+    console.log(this.travelForm.value['destination'])
+
+
     const eventID : string = ulid().slice(0, 7)
-
     const event = <Event> this.travelForm.value
+    event.startDate = new Date(event.startDate)
     event.eventID = eventID
+    event.endDate = new Date(event.endDate)
+    event.location = this.travelForm.value['destination']
+    const time = event.startDate.getTime() - (this.directionsObj.routes[0].legs[0].duration!.value * 1000)
+    event.departureTime = new Date(time)
 
-    console.log(event)
+    let userID = window.localStorage.getItem("userID") as string
+
+    //sendemail
+    const email : Email =  {
+      email: window.localStorage.getItem("email") as string,
+      event: event
+    }
+
+    userID = "1"
+
+    email.email = "granbluemule09@gmail.com"
+    console.log(email)
+
+    this.userSvc.sendMail(email ).then(value => {
+      console.log("email sent")
+    }).catch((error) => {
+      console.log(error)
+    })
+    this.userSvc.postEvent(event, userID).then(eventID =>
+      console.log(eventID)
+    ).catch((error) => {
+
+    })
+
+    this.router.navigate(['/displayroute', eventID])
 
   }
 
+
+
   ngAfterViewInit(): void {
     // this.getCurrentLocation();
+    this.directionsRender = new google.maps.DirectionsRenderer({ map : this.googleMap.googleMap})
   }
 
 
@@ -184,9 +230,11 @@ export class GoogleMapAngularComponent implements OnInit, AfterViewInit{
       mode: this.fb.control<string>('DRIVING'),
       comments: this.fb.control<string>(''),
       startDate: this.fb.control<Date>(new Date(0)),
-      endDate: this.fb.control<Date>(new Date(0))}
+      endDate: this.fb.control<Date>(new Date(0)),
+      sendMail: this.fb.control<boolean>(false)}
     )
   }
+
 
 
 

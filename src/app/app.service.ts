@@ -21,7 +21,6 @@ export class AppService {
 
   signUp(formData : FormData) {
 
-
     return firstValueFrom(this.http.post('/signup', formData))
   }
 }

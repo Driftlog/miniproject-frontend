@@ -1,7 +1,9 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from 'src/app/app.service';
 import { AuthService } from 'src/app/auth.service';
+import { Login } from '../models/Login';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +16,7 @@ export class LoginComponent implements OnInit{
   fb = inject(FormBuilder)
   appSvc = inject(AppService)
   authSvc = inject(AuthService)
+  router = inject(Router)
 
   ngOnInit() {
     this.loginForm = this.createForm()
@@ -27,8 +30,17 @@ export class LoginComponent implements OnInit{
   }
 
   login() {
-    const loginEmail = this.loginForm.value['email']
-    const loginPassword = this.loginForm.value['password']
+    const loginDetails =  this.loginForm.value as Login
+    this.authSvc.login(loginDetails).then( (value) => {
+      const login = <Login> value
+      localStorage.setItem("email", login.email)
+      localStorage.setItem("token", login.token )
+      localStorage.setItem("userID", login.userID)
+      this.router.navigate(["/homepage", login.userID])
+    }).catch((error) => {
+      console.log(error)
+    })
+
   }
 
   googleLogin() {

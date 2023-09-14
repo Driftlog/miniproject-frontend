@@ -1,48 +1,41 @@
-<h1> Sign Up Here</h1>
+<h1> Sign Up Here!</h1>
 
 
 <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
 
-  <p>
-  <label for="name">
-  What's your name? </label> <input formControlName="name">
-  </p>
+  <div>
+    <mat-form-field>
+      Enter name! <input matInput formControlName="userName" type="string" >
+    </mat-form-field>
+  </div>
 
-  <p>
-    <label for="password">
-    Entera password: </label> <input id="password" formControlName="password]">
-    </p>
+  <div>
+    <mat-form-field>
+      Enter your password: <input matInput formControlName="userPassword" type="string" >
+    </mat-form-field>
+  </div>
 
-  <p>
-  <label for="email">
-  Enter your email: </label> <input id="email" formControlName="email">
-  </p>
+  <div>
+    <mat-form-field>
+      Enter your email: <input matInput formControlName="email" type="string" >
+    </mat-form-field>
+  </div>
 
-  <p>
-  <label for="phoneNumber">
-  Enter your phone number: </label> <input id="phoneNumber" formControlName="phoneNumber">
-  </p>
+  <div>
+    <mat-form-field>
+      Enter your address: <input matInput formControlName="address" type="string" >
+    </mat-form-field>
+  </div>
 
+  <div>
+    <mat-form-field>
+      Enter your phone number: <input matInput formControlName="phoneNumber" type="number" >
+    </mat-form-field>
+  </div>
 
-  <p>
-  <label for="address1">
-  Address Line Number 1: </label> <input id="address1" formControlName="address1">
-  </p>
-
-  <p>
-  <label for="address2">
-  Address Line Number 2: </label> <input id="address2" formControlName="address2">
-  </p>
-
-  <p>
-  <label for="postalCode">
-  Postal Code: </label> <input id="postalCode" formControlName="postalCode">
-  </p>
-
-  <p>
-  <label for="displayPic">
-  How about a display picture?:  </label><input id="displayPic" type="file" #file>
-  </p>
+  <div>
+      Display image : <input formControlName="image" type="file" accept="image/*" #file>
+  </div>
 
   <button type="submit"> All done! </button>
 

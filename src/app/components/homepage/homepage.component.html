@@ -1,7 +1,20 @@
-<h1> Hello! </h1>
-<br>
-<a [routerLink]="['/login']">Welcome back!</a>
-<br>
-<a [routerLink]="['/signUp']"> New? Sign Up Here!</a>
+<div class="background">
+<h1 class="center">MapAhead</h1>
+
+<div class="centerButtons">
+<button mat-raised-button class="buttons" (click)="login()">Log in here!</button>
+</div>
+
+<div class="centerButtons">
+<button mat-button class="buttons" (click)="signUp()">Sign up here!</button>
+</div>
+
 <br>
 <a [routerLink]="['/googlemaps']"> This is a pen</a>
+<br>
+<a [routerLink]="['/displayroute', eventID]"> This is an event</a>
+<br>
+<a [routerLink]="['/eventlist']" [queryParams]="{ userID: userID}"> This is an event</a>
+</div>
+
+

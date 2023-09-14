@@ -1,23 +1,45 @@
 <fieldset class="form-fieldset">
 
+
+
+  <h2> Before the event starts...</h2>
+  <div class="my-google-map">
+    <google-map
+    #googleMap
+    id="googlemap"
+    (mapClick)="onMapClick($event)"
+    [options]="options"
+    [zoom]="zoom"
+    [center]="center"
+    >
+
+    <div>
+    <button (click)="resetFields()">Reset locations</button>
+    </div>
+
+    </google-map>
+  </div>
+  <br>
+
   <form [formGroup]="travelForm" (ngSubmit)="processForm()">
+    <fieldset>
     <div class="form-field">
     <mat-form-field>
-      Starting Point: <input matInput formControlName="origin" id="origin"  type="text" (input)="originChange()"
+      Where are you coming from <input matInput formControlName="origin" id="origin"  type="text" (input)="originChange()"
       placeholder="Enter a location">
     </mat-form-field>
     </div>
 
     <div class="form-field">
       <mat-form-field >
-        Destination: <input id="destination" matInput formControlName="destination" type="text" (input)="destinationChange()"
+        Event Location: <input id="destination" matInput formControlName="destination" type="text" (input)="destinationChange()"
         placeholder="Enter a location">
       </mat-form-field>
       </div>
 
       <div class="form-field">
         <mat-form-field >
-          Remarks: <textarea  matInput formControlName="comments" placeholder="Leave a description"> </textarea>
+          Event Description <textarea  matInput formControlName="comments" placeholder="Leave a description"> </textarea>
         </mat-form-field>
         </div>
 
@@ -33,9 +55,13 @@
     </mat-radio-group>
     </div>
 
+  </fieldset>
+
+  <h2> Event Details</h2>
+  <fieldset>
     <div>
     <mat-form-field>
-      Enter start date: <input matInput formControlName="startDate" type="datetime-local" placeholder="start date">
+      Event Starting Time: <input matInput formControlName="startDate" type="datetime-local" placeholder="start date">
     </mat-form-field>
     </div>
 
@@ -45,25 +71,16 @@
       </mat-form-field>
     </div>
 
+    <div>
+      <mat-checkbox formControlName="sendMail" >  Would you like a reminder? </mat-checkbox>
+    </div>
+  </fieldset>
+    <div>
     <button type="submit"> Done! </button>
+    </div>
   </form>
 
-<div class="my-google-map">
-  <google-map
-  #googleMap
-  id="googlemap"
-  (mapClick)="onMapClick($event)"
-  [options]="options"
-  [zoom]="zoom"
-  [center]="center"
-  >
 
-  <div>
-  <button (click)="resetFields()">Reset locations</button>
-  </div>
-
-  </google-map>
-</div>
 </fieldset>
 
 

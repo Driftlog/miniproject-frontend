@@ -6,7 +6,7 @@ export interface Event {
   comments: string,
   location: string,
   departureTime: Date
-
+  sendMail ?: boolean
 
 
 }
